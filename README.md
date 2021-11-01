@@ -1,6 +1,5 @@
 # DATAGRAM
-
-![](https://www.disruptunisia.com/logo/60210867840da.png  | width=250)
+  - ![](https://www.disruptunisia.com/logo/60210867840da.png | width=250)
 
 ## Installation
 
