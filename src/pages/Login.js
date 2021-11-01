@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
+import axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -28,15 +31,30 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function Login() {
+export default function Login(props) {
+  const [loading, setloading] = useState(false);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    setloading(true)
+    let json = {
+      username: data.get('username'),
+      password: data.get('password')
+    }
+
+    console.log(json);
+    axios.post('https://fakestoreapi.com/auth/login', json)
+      .then((res) => {
+        setloading(false)
+        console.log(res);
+        props.HandleAuth(true, res.data.token)
+      })
+      .catch((err) => {
+        setloading(false)
+
+      })
   };
 
   return (
@@ -57,15 +75,15 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} /* noValidate */ sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
@@ -78,18 +96,30 @@ export default function Login() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
+            /> */}
+            {loading ?
+              <LoadingButton
+                loading
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Save
+              </LoadingButton>
+              :
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </Button>}
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
