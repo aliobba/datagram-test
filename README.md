@@ -1,8 +1,15 @@
 # DATAGRAM
 
+![](https://www.disruptunisia.com/logo/60210867840da.png  | width=250)
+
 ## Installation
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+To install packages
+```bash
+npm install
+```
 
 ## Available Scripts
 
