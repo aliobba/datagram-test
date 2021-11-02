@@ -37,7 +37,7 @@ export default function ContentAndFooter(props) {
                 {'The footer will move as the main element of the page grows.'}
             </Typography> */}
             <Container component="main" sx={{ mt: 8, mb: 2 }} maxWidth="sm">
-                <Drawer />
+                
                 {children}
             </Container>
             {/* <Typography variant="body1">Sticky footer placeholder.</Typography>
@@ -61,6 +61,7 @@ export default function ContentAndFooter(props) {
                     <Copyright />
                 </Container>
             </Box>
+            
         </Box>
     );
 }

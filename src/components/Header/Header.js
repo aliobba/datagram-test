@@ -1,13 +1,101 @@
 
 import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import React from "react";
+import React, { useEffect, useImperativeHandle } from 'react';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import { withRouter } from "react-router-dom";
 
-export default function Header(props) {
-  //const [open, setOpen] = React.useState(true);
-  const toggleDrawer = () => {
-    //setOpen(!open);
-    props.toogleDrawer(true)
+function Header(props) {
+  const [state, setState] = React.useState({
+    left: false
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
+
+  const list = (anchor) => {
+    const { history } = props;
+    const itemsList = [
+      {
+        text: "Home",
+        onClick: () => history.push("/")
+      },
+      {
+        text: "Users",
+        onClick: () => history.push("/users")
+      },
+
+      {
+        text: "Carts",
+        onClick: () => history.push("/carts")
+      },
+      {
+        text: "Categories",
+        onClick: () => history.push("/categories")
+      },
+      {
+        text: "Products",
+        onClick: () => history.push("/products")
+      },
+      {
+        text: "Logout",
+        onClick: () => props.logout()
+      }
+    ];
+    return (
+      <Box
+        sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+        role="presentation"
+        onClick={toggleDrawer(anchor, false)}
+        onKeyDown={toggleDrawer(anchor, false)}
+      >
+        <List>
+          {itemsList.map((item, index) => {
+            const { text, icon, onClick } = item;
+            return (
+              <ListItem button key={text} onClick={onClick}>
+                {icon && <ListItemIcon>{icon}</ListItemIcon>}
+                <ListItemText primary={text} />
+              </ListItem>
+            );
+          })}
+        </List>
+        {/* <List>
+        {itemsList.map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>
+              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>
+              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List> */}
+      </Box>
+    )
   };
 
   const displayDesktop = () => {
@@ -18,7 +106,7 @@ export default function Header(props) {
           edge="start"
           color="inherit"
           aria-label="menu"
-          onClick={toggleDrawer}
+          onClick={toggleDrawer('left', true)}
           sx={{ mr: 2 }}
         >
           <MenuIcon />
@@ -34,6 +122,16 @@ export default function Header(props) {
   return (
     <header>
       <AppBar>{displayDesktop()}</AppBar>
+      <Drawer
+        variant={'temporary'}
+        anchor={'left'}
+        open={state['left']}
+        onClose={toggleDrawer('left', false)}
+      >
+        {list('left')}
+      </Drawer>
     </header>
   );
 }
+
+export default withRouter(Header);
