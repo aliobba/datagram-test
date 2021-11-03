@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
-import { Carts, Categories, Home, Login, Users } from './pages'
+import { Carts, Categories, Home, Login, Users,Products } from './pages'
+import AddProduct from './pages/products/AddProduct'
 import { Header, ContentAndFooter } from './components';
-import Products from './pages/Products';
+
 import { useCookies } from 'react-cookie';
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
               <Route exact path="/carts" component={Carts} />
               <Route exact path="/categories" component={Categories} />
               <Route exact path="/products" component={Products} />
+              <Route exact path="/AddProducts" component={AddProduct} />
             </Switch>
           </ContentAndFooter>
         </>
