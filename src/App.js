@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import { Carts, Categories, Home, Login, Users,Products } from './pages'
 import AddProducts from './pages/products/AddProducts'
+import EditProduct from './pages/products/EditProduct'
 import { Header, ContentAndFooter } from './components';
 
 import { useCookies } from 'react-cookie';
@@ -41,6 +42,7 @@ function App() {
               <Route exact path="/categories" component={Categories} />
               <Route exact path="/products" component={Products} />
               <Route exact path="/AddProducts" component={AddProducts} />
+              <Route exact path="/EditProduct" component={EditProduct} />
             </Switch>
           </ContentAndFooter>
         </>

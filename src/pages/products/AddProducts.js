@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-import Container from '@material-ui/core/Container';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import Container from '@mui/material/Container';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-
-///import { v4 as uuidv4 } from 'uuid';
-
-import { makeStyles } from '@material-ui/core/styles';
-import { Input } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,28 +20,15 @@ const useStyles = makeStyles((theme) => ({
 function AddProducts(props) {
   const classes = useStyles()
 
-  // const [inputFields, setInputFields] = useState([
-  //   { id: uuidv4(), title: '', price: '' , category: '' ,description: '',image:''},
-  // ]);
-
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    /* var formData = new FormData()
-
- formData.append("title", title);
- formData.append("price", price);
- formData.append("category", category);
- formData.append("description", description);
- formData.append("image", image); */
 
     setLoading(true)
     axios.post('https://fakestoreapi.com/products', {
@@ -56,8 +39,6 @@ function AddProducts(props) {
       category: category,
     })
       .then(result => {
-        //console.log("InputFields", formData);
-        //console.log({ result });
         if (result.status === 200) {
           setLoading(false)
           alert('Ajout effectué avec succès')
@@ -150,7 +131,7 @@ function AddProducts(props) {
           color="default"
           type="submit"
 
-          onClick={handleSubmit}
+          onClick={() => props.history.push("/products")}
         >Cancel</Button>}
       </form>
     </Container>
