@@ -5,7 +5,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CardMedia from '@mui/material/CardMedia';
 import AddIcon from '@mui/icons-material/Add';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-
+import TableContainer from '@mui/material/TableContainer';
+import Paper from '@mui/material/Paper';
 import {
   Grid,
   Card,
@@ -14,22 +15,37 @@ import { CssBaseline, IconButton, Typography } from "@mui/material"
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-export default function MediaCard() {
+export default function Products() {
 
 const [prod, setProds] = useState([]);
-  
   useEffect(() => {
-         axios.get('https://fakestoreapi.com/products').then(result => {
-             setProds(result.data);
-             console.log(result.data);
-            
-            
-         })
+       let unmounted = false;
+       console.log("Running effect to fetch data");
+    
+       setTimeout(() => {
+         console.log("Data loaded for page");
+    
+         if (!unmounted) {
+          axios.get('https://fakestoreapi.com/products').then(result => {
+            setProds(result.data);
+            console.log(result.data);
+           
+           
+        })
+          
+         }
+       }, 4);
+    
+       return () => {
+         unmounted = true;
+       };
      }, []);
      return (
-      <div >
-       
-      <CssBaseline />
+      <>
+    <CssBaseline />
+            <Typography variant="h2" component="h1" gutterBottom>
+                Products list 
+            </Typography>
       <IconButton color="primary" aria-label="upload picture" component="span">
        <Link to={`/AddProducts`} className="btn btn-success">
        <AddIcon/> 
@@ -37,14 +53,14 @@ const [prod, setProds] = useState([]);
                              
   </IconButton>
  <br/>
-          
+ <TableContainer component={Paper}>
           <Grid
            
             container
             spacing={2}
             direction="row"
-           // justifyContent="flex-start"
-           // alignItems="flex-stat"
+           //justifyContent="flex-start"
+           //alignItems="flex-stat"
           >
             {prod.map((row) => (
               <Grid item xs={3} key={row.id}>
@@ -93,8 +109,9 @@ const [prod, setProds] = useState([]);
               </Grid>
             ))}
           </Grid>
+          </TableContainer>
       
-      </div>
+      </>
     );
   }
   

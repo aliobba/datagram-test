@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import { Carts, Categories, Home, Login, Users,Products } from './pages'
-import AddProduct from './pages/products/AddProduct'
+import AddProducts from './pages/products/AddProducts'
 import { Header, ContentAndFooter } from './components';
 
 import { useCookies } from 'react-cookie';
@@ -15,10 +15,10 @@ function App() {
     if (cookies.token)
       setToken(cookies.token);
 
-  })
+  }, [cookies.token])
 
   function HandleAuth(logged, token) {
-    console.log({ logged, token });
+   // console.log({ logged, token });
     setCookie('token', token, { path: '/', maxAge: 3600 });
     setToken(token)
   }
@@ -40,7 +40,7 @@ function App() {
               <Route exact path="/carts" component={Carts} />
               <Route exact path="/categories" component={Categories} />
               <Route exact path="/products" component={Products} />
-              <Route exact path="/AddProducts" component={AddProduct} />
+              <Route exact path="/AddProducts" component={AddProducts} />
             </Switch>
           </ContentAndFooter>
         </>

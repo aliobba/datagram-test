@@ -15,17 +15,19 @@ import axios from 'axios';
 export default function Users() {
 
   
- 
+  const baseUrl='https://fakestoreapi.com/users'
   const [users, setUsers] = useState([]);
   
  useEffect(() => {
-        axios.get('https://fakestoreapi.com/users').then(result => {
+        axios.get(baseUrl).then(result => {
           setUsers(result.data);
-            console.log(result.data);
+           // console.log('test',result.data);
            
            
         })
     }, []);
+
+   
   return (
     <>
      <CssBaseline />
@@ -46,9 +48,9 @@ export default function Users() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {users.map((row) => (
+          {users.map((row,id) => (
             <TableRow
-              key={row.id}
+              key={id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">

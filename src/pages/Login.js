@@ -45,10 +45,10 @@ export default function Login(props) {
 
     console.log(json);
     axios.post('https://fakestoreapi.com/auth/login', json)
-      .then((res) => {
+      .then((response) => {
         setloading(false)
-        console.log(res);
-        props.HandleAuth(true, res.data.token)
+       // console.log(response);
+        props.HandleAuth(true, response.data.token)
       })
       .catch((err) => {
         setloading(false)

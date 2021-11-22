@@ -16,9 +16,9 @@ export default function Categories() {
   const [prod, setProds] = useState([]);
   
  useEffect(() => {
-        axios.get('https://fakestoreapi.com/products/categories').then(result => {
-            setProds(result.data);
-            console.log(result.data);
+        axios.get('https://fakestoreapi.com/products/categories').then(response => {
+            setProds(response.data);
+           // console.log(response.data);
            
            
         })
@@ -34,25 +34,26 @@ export default function Categories() {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Full_Name</TableCell>
+            <TableCell>Name</TableCell>
             <TableCell align="right">Email</TableCell>
-            <TableCell align="right">Phone</TableCell>
-            <TableCell align="right">Address</TableCell>
+          
   
           
           </TableRow>
         </TableHead>
         <TableBody>
-          {prod.map((row) => (
+          {prod.map((row,id) => (
             <TableRow
-              key={row.id}
+              key={id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.date} 
+                {row} 
               </TableCell>
 
-           
+              <TableCell component="th" scope="row">
+                {row} 
+              </TableCell>
          
             </TableRow>
           ))}
