@@ -41,10 +41,7 @@ function Header(props) {
         text: "Carts",
         onClick: () => history.push("/carts")
       },
-      {
-        text: "Categories",
-        onClick: () => history.push("/categories")
-      },
+     
       {
         text: "Products",
         onClick: () => history.push("/products")

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-
+import Select from '@mui/material/Select';
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
@@ -26,7 +26,16 @@ function AddProducts(props) {
   const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [prod, setProds] = useState([]);
+  
+  useEffect(() => {
+         axios.get('https://fakestoreapi.com/products/categories').then(response => {
+             setProds(response.data);
+             console.log(response.data);
+            
+            
+         })
+     }, [prod]);
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -53,18 +62,6 @@ function AddProducts(props) {
         alert(err)
       })
   };
-
-  // const handleChangeInput = (id, event) => {
-  //   const newInputFields = inputFields.map(i => {
-  //     if(id === i.id) {
-  //       i[event.target.name] = event.target.value
-  //     }
-  //     return i;
-  //   })
-
-  //   setInputFields(newInputFields);
-  // }
-
 
 
   return (
@@ -94,7 +91,27 @@ function AddProducts(props) {
             variant="filled"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-          /><br />
+          />
+          
+          
+          
+         
+
+
+
+
+
+
+                                    <Select name="category" >
+                        <option value="">Choose a category</option>
+                        {prod.map((value) => (
+                            <option value={value.id} key={value.id}>
+                                {value}
+                            </option>
+                        ))}
+                    </Select>
+          
+          <br />
           <TextField
             name="description"
             label="description"

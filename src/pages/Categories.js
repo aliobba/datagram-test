@@ -18,7 +18,7 @@ export default function Categories() {
  useEffect(() => {
         axios.get('https://fakestoreapi.com/products/categories').then(response => {
             setProds(response.data);
-           // console.log(response.data);
+            console.log(response.data);
            
            
         })

@@ -6,17 +6,18 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { CssBaseline, Typography } from "@mui/material"
+import { CssBaseline, Typography,makeStyles,InputAdornment ,Input} from "@mui/material"
 import axios from 'axios';
-
+import { SearchBar } from "@mui/icons-material";
 
 
 
 export default function Users() {
+ 
 
-  
   const baseUrl='https://fakestoreapi.com/users'
   const [users, setUsers] = useState([]);
+  const [searched, setSearched] = useState([]);
   
  useEffect(() => {
         axios.get(baseUrl).then(result => {
@@ -27,13 +28,30 @@ export default function Users() {
         })
     }, []);
 
-   
+    const requestSearch = (searchedVal: string) => {
+      const filteredRows = users.filter((row) => {
+        return row.name.toLowerCase().includes(searchedVal.toLowerCase());
+      });
+      setUsers(filteredRows);
+    };
+  
+    const cancelSearch = () => {
+      setSearched("");
+      requestSearch(searched);
+    };
   return (
     <>
      <CssBaseline />
             <Typography variant="h2" component="h1" gutterBottom>
                 Users list 
             </Typography>
+            <Typography>
+            <SearchBar
+          value={searched}
+          onChange={(searchVal) => requestSearch(searchVal)}
+          onCancelSearch={() => cancelSearch()}
+        />
+                </Typography>
     <TableContainer component={Paper}>
     
       <Table sx={{ minWidth: 650 }} aria-label="simple table">

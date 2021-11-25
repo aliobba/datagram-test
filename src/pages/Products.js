@@ -4,26 +4,27 @@ import CardActions from '@mui/material/CardActions';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CardMedia from '@mui/material/CardMedia';
 import AddIcon from '@mui/icons-material/Add';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import TableContainer from '@mui/material/TableContainer';
-import Paper from '@mui/material/Paper';
+
 import Grid from '@mui/material/Grid';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Card from '@mui/material/Card';
-import { Button, CardContent, CssBaseline, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Typography } from "@mui/material"
+import { Button, CardContent, Dialog, DialogActions, DialogTitle, IconButton, Typography } from "@mui/material"
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 export default function Products() {
 
+  const baseUrl='https://fakestoreapi.com/products'
   const [open, setOpen] = React.useState(false);
   const [prod, setProds] = useState([]);
+  const [cat, setCats] = useState([]);
   const [loading, setLoading] = useState(false);
   const [idTodelete, setIdTodelete] = useState(null);
-
+  //const [prodFitred, setProdsFitred] = useState([]);
   useEffect(() => {
     setLoading(true)
-    axios.get('https://fakestoreapi.com/products').then(result => {
+    axios.get(baseUrl).then(result => {
       setProds(result.data);
       setLoading(false);
 
@@ -34,6 +35,60 @@ export default function Products() {
       })
 
   }, []);
+
+  useEffect(() => {
+    axios.get('https://fakestoreapi.com/products/categories').then(response => {
+      setCats(response.data);
+        //console.log(response.data);
+       
+       
+    })
+}, []);
+
+
+const searchFilterFunction = event => {
+  //text it contains the selected category
+       var text = event.target.value;
+       
+       console.log(text)
+
+       
+   if (text === ""){
+
+    console.log(text)
+
+   
+    axios.get((baseUrl)).then(response => {
+      setProds(response.data);
+      setLoading(false);
+        console.log('lol',response.data)
+       
+       
+       
+    });
+
+
+   }
+       else{
+
+       console.log(text)
+        axios.get((`https://fakestoreapi.com/products/category/${text}`)).then(response => {
+          setProds(response.data);
+            console.log('ines',response.data);
+           
+           
+        });
+
+       }
+      
+   
+     
+
+};
+
+
+
+
 
   const handleClickOpen = (id) => {
     setOpen(true);
@@ -50,7 +105,7 @@ export default function Products() {
     setLoading(true);
     axios.delete('https://fakestoreapi.com/products/' + idTodelete).then(result => {
       //setProds(result.data);
-      console.log(result);
+      //console.log(result);
       setLoading(false);
       alert('Product with ' + idTodelete + ' was deleted');
     })
@@ -63,22 +118,47 @@ export default function Products() {
 
   return (
     <div>
-      {/* <CssBaseline /> */}
+  
       <Typography variant="h2" component="h1" gutterBottom>
         Products list
       </Typography>
+
+
+      <Grid >
+   
+
+
+
+          <select className="form-control" name="categorie" onChange={(val) => searchFilterFunction(val)}   aria-label="Default select example">
+                          
+                          
+                            <option value=""> filtre by category</option>
+                         
+                       
+                            {cat.map((value,id) => (
+            
+            <option value={value} key={id}>
+              {value}
+            </option>
+          ))}
+                          
+  </select>
+      
+      
       <IconButton color="primary" aria-label="upload picture" component="span">
         <Link to={`/AddProducts`} className="btn btn-success">
           <AddIcon />
         </Link>
 
       </IconButton>
+
+      </Grid>
       <br />
       {loading ? <CircularProgress /> :
         <Grid container spacing={1} direction="row">
 
-          {prod.map((row) => (
-            <Grid item xs={4} key={row.id}>
+          {prod.map((row,id) => (
+            <Grid item xs={4} key={id}>
               <Card>
                 <CardMedia
                   component="img"
@@ -103,24 +183,27 @@ export default function Products() {
                     <Link to={{
                       pathname: '/EditProduct',
                       state: row
-                    }} /* to={`/EditProduct`} params={{ user: row }} */ className="btn btn-success">
+                    }} >
                       <ModeEditOutlineIcon />
                     </Link>
 
                   </IconButton>
                   <IconButton onClick={() => handleClickOpen(row.id)} color="primary" aria-label="upload picture" component="span">
-                    {/* <Link to={`/Delete/${row.id}`} className="btn btn-success"> */}
+                  
                     <DeleteIcon />
-                    {/* </Link> */}
-
+                 
                   </IconButton>
+                
                   <IconButton color="primary" aria-label="upload picture" component="span">
-                    <Link to={`/more/${row.id}`} className="btn btn-success">
-                      <MoreHorizIcon />
-                    </Link>
+                  
 
+                  <Link to={{
+                      pathname: '/More',
+                      state: row
+                    }} >
+                                
+                                   <MoreHorizIcon/>    </Link>
                   </IconButton>
-
 
                 </CardActions>
               </Card>

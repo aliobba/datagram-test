@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
-import { Carts, Categories, Home, Login, Users,Products } from './pages'
+import { Carts, Home, Login, Users,Products } from './pages'
 import AddProducts from './pages/products/AddProducts'
 import EditProduct from './pages/products/EditProduct'
 import { Header, ContentAndFooter } from './components';
 
 import { useCookies } from 'react-cookie';
+import Details  from './pages/products/Details';
+import DetailsCart  from './pages/carts/DetailsCart';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -39,9 +41,11 @@ function App() {
               <Route exact path="/" component={Home} />
               <Route exact path="/users" component={Users} />
               <Route exact path="/carts" component={Carts} />
-              <Route exact path="/categories" component={Categories} />
+             
               <Route exact path="/products" component={Products} />
               <Route exact path="/AddProducts" component={AddProducts} />
+              <Route exact path="/More" component={Details} />
+              <Route exact path="/Morecart" component={DetailsCart} />
               <Route exact path="/EditProduct" component={EditProduct} />
             </Switch>
           </ContentAndFooter>
