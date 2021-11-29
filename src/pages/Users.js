@@ -7,9 +7,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
-import { CssBaseline, Typography, makeStyles, InputAdornment, Input } from "@mui/material"
+import { CssBaseline, Typography } from "@mui/material"
 import axios from 'axios';
-//import { SearchBar } from "@mui/icons-material";
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { Link } from 'react-router-dom';
+
+
 
 
 
@@ -37,6 +40,7 @@ export default function Users() {
     setUsers(filteredRows);
   };
 
+  
   const cancelSearch = () => {
     setSearched("");
     requestSearch(searched);
@@ -49,6 +53,16 @@ export default function Users() {
     } else {
       setSortOrder('asc');
       users.sort((a, b) => (b.name.firstname > a.name.firstname) ? 1 : -1);
+    }
+  };
+
+  const requestSortEmail = () => {
+    if (sortOrder === 'asc') {
+      setSortOrder('desc');
+      users.sort((a, b) => (a.email > b.email) ? 1 : -1);
+    } else {
+      setSortOrder('asc');
+      users.sort((a, b) => (b.email > a.email) ? 1 : -1);
     }
   };
 
@@ -80,9 +94,21 @@ export default function Users() {
                   Full Name
                 </TableSortLabel>
               </TableCell>
-              <TableCell align="right">Email</TableCell>
-              <TableCell align="right">Phone</TableCell>
-              <TableCell align="right">Address</TableCell>
+              <TableCell  sortDirection={users} align="center">
+              
+               <TableSortLabel
+                  active={true}
+                  direction={sortOrder}
+                  onClick={() =>requestSortEmail()}
+                  
+                >
+                Email
+                </TableSortLabel> 
+                </TableCell>
+              <TableCell align="center">Phone</TableCell>
+              <TableCell align="center">Address</TableCell>
+              <TableCell align="center">Action</TableCell>
+       
 
 
             </TableRow>
@@ -96,9 +122,18 @@ export default function Users() {
                 <TableCell component="th" scope="row">
                   {row.name.firstname}  {row.name.lastname}
                 </TableCell>
-                <TableCell align="right">{row.email}</TableCell>
-                <TableCell align="right">{row.phone}</TableCell>
-                <TableCell align="right">{row.address.city} {row.address.city} {row.address.street} {row.address.number}   </TableCell>
+                <TableCell align="center" >{row.email}</TableCell>
+                <TableCell align="center">{row.phone}</TableCell>
+                <TableCell align="center">{row.address.city} {row.address.city} {row.address.street} {row.address.number}   </TableCell>
+                <TableCell align="center">
+                <Link to={{
+                      pathname: '/MoreUser',
+                      state: row
+                    }} >
+                                
+                                <MoreHorizIcon/>        </Link>
+                
+                  </TableCell>
 
               </TableRow>
             ))}
