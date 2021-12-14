@@ -13,13 +13,12 @@ import UserDetails from './pages/users/UserDetails';
 
 function App() {
   const [token, setToken] = useState(null);
-  const [logged, setlogged] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
   useEffect(() => {
-    if (cookies.token)
+    if (cookies.token && cookies.token === "eyJr389hbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9")
       setToken(cookies.token);
-      
+
 
   }, [cookies.token])
 
@@ -27,19 +26,17 @@ function App() {
   function HandleAuth(logged, token) {
     // console.log({ logged, token });
     setCookie('token', token, { path: '/', maxAge: 3600 });
-    setlogged(logged)
     setToken(token)
   }
 
   function logout() {
     setToken(null);
-    setlogged(false);
     removeCookie('token');
   }
 
   return (
     <div className="App">
-      {token && logged ?
+      {token ?
         <>
           <Header logout={logout} />
           <ContentAndFooter >
